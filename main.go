@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
+	"sort"
 )
 
 func removeElem(src *[]byte, i int) {
@@ -138,22 +140,35 @@ func isQuotes(str string, quotesor *bool) bool {
 	return *quotesor
 }
 
+func getSource() []string {
+	arr := []string{}
+	filepath.Walk("./src/", func(path string, info os.FileInfo, _ error) error {
+		if filepath.Ext(path) == ".lua" {
+			arr = append(arr, info.Name())
+		}
+		return nil
+	})
+
+	sort.Strings(arr)
+
+	for _, v := range arr {
+		fmt.Println("Found: " + v)
+	}
+
+	return arr
+}
+
 func main() {
 	missionScript, _ := os.Create("missionScript.lua")
 	defer missionScript.Close()
 
-	missionSource := []string{
-		"main",
-		"air",
-		"refuel",
-		"menu",
-	}
+	missionSource := getSource()
 
-	optionDevmode := false
+	optionDevmode := true
 
 	var script []byte
 	for i := 0; i < len(missionSource); i++ {
-		src, _ := ioutil.ReadFile("./src/" + missionSource[i] + ".lua")
+		src, _ := ioutil.ReadFile("./src/" + missionSource[i])
 		if !optionDevmode && len(src) > 0 {
 			removeComment(&src)
 			removeLineFeed(&src)
@@ -173,10 +188,10 @@ func main() {
 	}
 
 	if !optionDevmode {
-		fmt.Println("SERIALIZING COMPLETE")
 		fmt.Println("TOTAL LENGTH: ", len(script))
+		fmt.Println("** MERGING & SERIALIZING COMPLETE **")
 	} else {
-		fmt.Println("MERGING COMPLETE")
+		fmt.Println("** MERGING COMPLETE **")
 	}
 
 	ioutil.WriteFile("missionScript.lua", script, 0)

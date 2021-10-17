@@ -194,17 +194,17 @@ do MISSION.REFUEL = {}; local MASTER = MISSION.REFUEL
 
     local function checkState(unitId, tankerIndex, unitObject, tankerType)
         if tankerIndex == nil then
-            outMsg(unitId, "No More Tanker", "dead")
+            printMsg(unitId, "No More Tanker", "dead")
             return false
         end
 
         if tankerType == nil then
-            outMsg(unitId, "This Aircraft Can't Be", "dead")
+            printMsg(unitId, "This Aircraft Can't Be", "dead")
             return false
         end
 
         if unitObject:inAir() ~= true then
-            outMsg(unitId, "You're Not in the Air", "dead")
+            printMsg(unitId, "You're Not in the Air", "dead")
             return false
         end
 

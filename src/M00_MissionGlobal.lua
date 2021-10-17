@@ -1,18 +1,5 @@
 MISSION = {}
 
-function printData(data, indent)
-    if indent == nil then
-        indent = ""
-    end
-    for k, v in pairs(data) do
-        if type(v) == "table" then
-            printData(v, indent .. "\t")
-        else
-            env.info("[" .. k .. "] " .. type(v) .. ": " .. v)
-        end
-    end
-end
-
 function getUnitData(unitName)
     local unitObject = Unit.getByName(unitName)
     local unitDesc = unitObject:getDesc()
@@ -68,7 +55,7 @@ function getTacan(Ch, Mode)
     return (a + Ch - b) * 1000000
 end
 
-function outMsg(id, str, snd)
+function printMsg(id, str, snd)
     trigger.action.outTextForGroup(
         id, str, 5, true
     )
