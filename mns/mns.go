@@ -12,31 +12,6 @@ func removeElem(src *[]byte, i int) {
 	*src = append((*src)[:i], (*src)[i+1:]...)
 }
 
-func removeCommentLegacie(src *[]byte) {
-	ini := false
-	act := false
-	for i := 0; i < len(*src); i++ {
-		if !act && string((*src)[i]) == "-" {
-			if !ini {
-				ini = true
-			} else {
-				ini = false
-				act = true
-				removeElem(src, i-1)
-				i--
-			}
-		}
-		if act {
-			if (*src)[i] == 10 {
-				act = false
-			} else {
-				removeElem(src, i)
-				i--
-			}
-		}
-	}
-}
-
 func removeComment(src *[]byte) {
 	act := false
 	for i := 0; i < len(*src)-1; i++ {
@@ -151,20 +126,16 @@ func getSource() []string {
 
 	sort.Strings(arr)
 
-	for _, v := range arr {
-		fmt.Println("Found: " + v)
-	}
-
 	return arr
 }
 
 func main() {
-	missionScript, _ := os.Create("missionScript.lua")
+	missionScript, _ := os.Create("./mns/missionScript.lua")
 	defer missionScript.Close()
 
 	missionSource := getSource()
 
-	optionDevmode := true
+	optionDevmode := false
 
 	var script []byte
 	for i := 0; i < len(missionSource); i++ {
@@ -188,11 +159,11 @@ func main() {
 	}
 
 	if !optionDevmode {
-		fmt.Println("TOTAL LENGTH: ", len(script))
 		fmt.Println("** MERGING & SERIALIZING COMPLETE **")
+		fmt.Println("TOTAL LENGTH: ", len(script))
 	} else {
 		fmt.Println("** MERGING COMPLETE **")
 	}
 
-	ioutil.WriteFile("missionScript.lua", script, 0)
+	ioutil.WriteFile("./mns/missionScript.lua", script, 0)
 }
