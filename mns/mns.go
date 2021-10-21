@@ -135,7 +135,7 @@ func main() {
 
 	missionSource := getSource()
 
-	optionDevmode := false
+	optionDevmode := true
 
 	var script []byte
 	for i := 0; i < len(missionSource); i++ {
