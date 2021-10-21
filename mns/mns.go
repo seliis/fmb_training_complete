@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
-	"sort"
 )
 
 func removeElem(src *[]byte, i int) {
@@ -115,31 +113,24 @@ func isQuotes(str string, quotesor *bool) bool {
 	return *quotesor
 }
 
-func getSource() []string {
-	arr := []string{}
-	filepath.Walk("./src/", func(path string, info os.FileInfo, _ error) error {
-		if filepath.Ext(path) == ".lua" {
-			arr = append(arr, info.Name())
-		}
-		return nil
-	})
-
-	sort.Strings(arr)
-
-	return arr
-}
-
 func main() {
 	missionScript, _ := os.Create("./mns/missionScript.lua")
 	defer missionScript.Close()
 
-	missionSource := getSource()
+	missionSource := []string{
+		"main",
+		"combat",
+		"refuel",
+		"interface",
+		"event",
+		"waypoint",
+	}
 
 	optionDevmode := true
 
 	var script []byte
 	for i := 0; i < len(missionSource); i++ {
-		src, _ := ioutil.ReadFile("./src/" + missionSource[i])
+		src, _ := ioutil.ReadFile("./src/" + missionSource[i] + ".lua")
 		if !optionDevmode && len(src) > 0 {
 			removeComment(&src)
 			removeLineFeed(&src)
