@@ -143,7 +143,6 @@ func processContents(missionPath string, sourcePath string, tempPath string) {
 	for oldScan.Scan() {
 		oldTxt := oldScan.Text()
 		if i == x1+1 {
-			newData.WriteString("-- Start\n")
 			for srcScan.Scan() {
 				newTxt := srcScan.Text()
 				if j > y1 && j < y2 {
@@ -151,7 +150,6 @@ func processContents(missionPath string, sourcePath string, tempPath string) {
 				}
 				j++
 			}
-			newData.WriteString("-- End\n")
 		} else if i < x1 || i > x2 {
 			newData.WriteString(oldTxt + "\n")
 		}

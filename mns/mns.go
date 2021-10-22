@@ -121,6 +121,7 @@ func main() {
 		"main",
 		"combat",
 		"refuel",
+		"carrier",
 		"interface",
 		"event",
 		"waypoint",

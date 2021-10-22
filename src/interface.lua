@@ -7,8 +7,12 @@ do
                 dist = mist.utils.NMToMeters(20),
                 temp = {
                     [1] = {
-                        desc = "MiG-23",
-                        name = "AI_RED_AIR_M23_BFM"
+                        desc = "MiG-19",
+                        name = "AI_RED_AIR_M19_BFM"
+                    },
+                    [2] = {
+                        desc = "F-5E-3",
+                        name = "AI_RED_AIR_F5E_BFM"
                     }
                 }
             },
@@ -19,8 +23,12 @@ do
                 dist = mist.utils.NMToMeters(40),
                 temp = {
                     [1] = {
-                        desc = "MiG-23",
-                        name = "AI_RED_AIR_M23_ACM"
+                        desc = "MiG-21",
+                        name = "AI_RED_AIR_M21_ACM"
+                    },
+                    [2] = {
+                        desc = "M-2000C",
+                        name = "AI_RED_AIR_M2K_ACM"
                     }
                 }
             },
@@ -30,8 +38,20 @@ do
                 dist = mist.utils.NMToMeters(80),
                 temp = {
                     [1] = {
-                        desc = "MiG-23",
-                        name = "AI_RED_AIR_M23_BVR"
+                        desc = "MiG-29A",
+                        name = "AI_RED_AIR_M29_BVR"
+                    },
+                    [2] = {
+                        desc = "F-14A",
+                        name = "AI_RED_AIR_F14_BVR"
+                    },
+                    [3] = {
+                        desc = "FC-1",
+                        name = "AI_RED_AIR_FC1_BVR"
+                    },
+                    [4] = {
+                        desc = "F-18C",
+                        name = "AI_RED_AIR_F18_BVR"
                     }
                 }
             }
