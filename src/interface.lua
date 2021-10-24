@@ -81,7 +81,7 @@ do
         )
 
         missionCommands.addCommandForGroup(
-            unitId, "Sanitize", mainStrt, MISSION.AIR["SANITIZE"]
+            unitId, "Sanitize", mainStrt, MISSION.AIR["SANITIZE"], unitId, unitName
         )
 
         for _, combatData in ipairs(combatType) do
@@ -98,7 +98,7 @@ do
                     )
                     for i = 1, 4 do
                         missionCommands.addCommandForGroup(
-                            unitId, i .. "-Ship", dirStrt, MISSION.AIR["MAIN"], unitName,
+                            unitId, i .. "-Ship", dirStrt, MISSION.AIR["MAIN"], unitId, unitName,
                             {
                                 spawnAmount   = i,
                                 weaponFlag    = combatData.flag,

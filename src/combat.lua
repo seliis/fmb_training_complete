@@ -97,7 +97,48 @@ do MISSION.AIR = {}; local MASTER = MISSION.AIR
         )
     end
 
-    MASTER["MAIN"] = function(unitName, tempData)
+    local function setMonitoring(arrIndex, arrFrnd, arrAdvs)
+        timer.scheduleFunction(
+            function(...)
+                for _, advs in ipairs(arrAdvs) do
+                    if advs:isExist() == true and advs:inAir() == true then
+                        return arg[2] + 10
+                    end
+                end
+                for _, frnd in ipairs(arrFrnd) do
+                    local id = frnd:getID()
+                    printMsg(id, "Airspace has been Sanitized", "bell")
+                end
+                MASTER.DB[arrIndex] = nil
+            end, nil, timer.getTime() + 1
+        )
+    end
+
+    local function checkUnit(unitId, unitName)
+        local unit = Unit.getByName(unitName)
+
+        if unit:inAir() ~= true then
+            printMsg(unitId, "You're Not in the Air", "dead")
+            return false
+        end
+
+        for _, data in ipairs(MASTER.DB) do
+            for _, elem in ipairs(data.arrFrnd) do
+                if elem == unit then
+                    printMsg(unitId, "You're Have One", "dead")
+                    return false
+                end
+            end
+        end
+
+        return true
+    end
+
+    MASTER["MAIN"] = function(unitId, unitName, tempData)
+        if checkUnit(unitId, unitName) ~= true then
+            return nil
+        end
+
         local unitData = getUnitData(unitName)
         local unitHdg = mist.getHeading(unitData.unitObject)
         local unitPos = unitData.unitObject:getPoint()
@@ -111,22 +152,58 @@ do MISSION.AIR = {}; local MASTER = MISSION.AIR
             spawnPos, tempData.tempName, tempData.spawnAmount, unitHdg, unitPos
         )
         local arrFrnd = getFriend(unitPos)
-        setIntercept(grpAdvs:getUnits(), arrFrnd, tempData.weaponFlag)
-        MASTER.DB[#MASTER.DB+1] = grpAdvs
+        local arrAdvs = grpAdvs:getUnits()
+        setIntercept(arrAdvs, arrFrnd, tempData.weaponFlag)
+        local arrIndex = #MASTER.DB + 1
+        MASTER.DB[arrIndex] = {
+            arrFrnd = arrFrnd,
+            grpAdvs = grpAdvs
+        }
+        setMonitoring(arrIndex, arrFrnd, arrAdvs)
         trigger.action.outText(
             string.format("%s: %s-Ship %s Spawned", tempData.tempType, tempData.spawnAmount, tempData.tempDesc), 10, false
         )
         trigger.action.outSound("beep.ogg")
     end
 
-    MASTER["SANITIZE"] = function()
-        for i, grpAdvs in ipairs(MASTER.DB) do
-            if grpAdvs ~= nil and grpAdvs:isExist() == true then
-                grpAdvs:destroy()
+    MASTER["SANITIZE"] = function(unitId, unitName)
+        local function isAdvs()
+            for _, elem in ipairs(MASTER.DB) do
+                if elem ~= nil then
+                    return true
+                end
             end
-            MASTER.DB[i] = nil
+            return false
         end
-        trigger.action.outText("Sanitized", 10, false)
-        trigger.action.outSound("beep.ogg")
+
+        local function checkArr(arr, unit)
+            for _, elem in ipairs(arr) do
+                if elem == unit then
+                    return true
+                end
+            end
+            printMsg(unitId, "Nothing Yours", "dead")
+            return false
+        end
+
+        if isAdvs() == false then
+            trigger.action.outTextForGroup(unitId, "No Adversaries", 5, false)
+            trigger.action.outSoundForGroup(unitId, "dead.ogg")
+            return nil
+        end
+
+        local unit = Unit.getByName(unitName)
+        
+        for i, arr in ipairs(MASTER.DB) do
+            if checkArr(arr.arrFrnd, unit) == true then
+                if arr.grpAdvs ~= nil and arr.grpAdvs:isExist() == true then
+                    arr.grpAdvs:destroy()
+                end
+                MASTER.DB[i] = nil
+                trigger.action.outTextForGroup(unitId, "Sanitized", 5, false)
+                trigger.action.outSoundForGroup(unitId, "beep.ogg")
+                break
+            end
+        end
     end
 end
