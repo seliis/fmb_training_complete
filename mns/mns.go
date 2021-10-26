@@ -120,6 +120,7 @@ func main() {
 	missionSource := []string{
 		"main",
 		"combat",
+		"circle",
 		"refuel",
 		"carrier",
 		"interface",
@@ -127,7 +128,7 @@ func main() {
 		"waypoint",
 	}
 
-	optionDevmode := true
+	optionDevmode := false
 
 	var script []byte
 	for i := 0; i < len(missionSource); i++ {

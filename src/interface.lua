@@ -4,7 +4,7 @@ do
             [1] = {
                 desc = "BFM",
                 flag = 536870912,
-                dist = mist.utils.NMToMeters(20),
+                dist = mist.utils.NMToMeters(15),
                 temp = {
                     [1] = {
                         desc = "MiG-19",
@@ -18,9 +18,8 @@ do
             },
             [2] = {
                 desc = "ACM",
-                --[[ flag = 4194304, This Flag is SRAAM ]]
-                flag = 33554432, -- IRAAM
-                dist = mist.utils.NMToMeters(40),
+                flag = 33554432,
+                dist = mist.utils.NMToMeters(30),
                 temp = {
                     [1] = {
                         desc = "MiG-21",
@@ -35,7 +34,7 @@ do
             [3] = {
                 desc = "BVR",
                 flag = nil,
-                dist = mist.utils.NMToMeters(80),
+                dist = mist.utils.NMToMeters(60),
                 temp = {
                     [1] = {
                         desc = "MiG-29A",

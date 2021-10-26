@@ -102,7 +102,7 @@ do MISSION.AIR = {}; local MASTER = MISSION.AIR
             function(...)
                 for _, advs in ipairs(arrAdvs) do
                     if advs:isExist() == true and advs:inAir() == true then
-                        return arg[2] + 10
+                        return arg[2] + 1
                     end
                 end
                 for _, frnd in ipairs(arrFrnd) do

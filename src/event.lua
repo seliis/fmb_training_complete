@@ -48,10 +48,21 @@ do MISSION.EVT = {}; local MASTER = MISSION.EVT
         end
     end
 
+    do MASTER.HIT = {}; local HIT = MASTER.HIT
+        HIT["MAIN"] = function(eventData)
+            local desc = eventData.target:getDesc()
+            if desc.attributes["Ground Units"] == true then
+                printMsg(eventData.initiator:getID(), "Hit", "bell")
+            end
+        end
+    end
+
     function MASTER:onEvent(eventData)
         local id = eventData.id
         if id == 1 then
             MASTER.AAM["MAIN"](eventData)
+        elseif id == 2 then
+            MASTER.HIT["MAIN"](eventData)
         elseif id == 33 then -- Discard Chair After Ejection
             eventData.initiator:destroy()
             eventData.target:destroy()
