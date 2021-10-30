@@ -1,4 +1,4 @@
-do local make = true -- if false, ignore below scirpts
+do local make = false -- if false, ignore below scirpts
     if make and lfs and io then local blue = env.mission.coalition.blue
         local function getWaypoints()
             local arr = {}

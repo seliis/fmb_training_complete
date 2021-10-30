@@ -120,7 +120,7 @@ func main() {
 	missionSource := []string{
 		"main",
 		"combat",
-		"circle",
+		"ground",
 		"refuel",
 		"carrier",
 		"interface",

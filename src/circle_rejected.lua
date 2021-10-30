@@ -1,4 +1,4 @@
-do
+do -- REJECTED
     local function makeCircle(point, radius, angle)
         for deg = 0, 359, angle do
             local trans = transPos(
@@ -61,7 +61,7 @@ do
         timer.scheduleFunction(
             function(...)
                 local unit = grp:getUnit(1)
-                trigger.action.smoke(unit:getPoint(), 3)
+                trigger.action.smoke(unit:getPoint(), 1)
                 return arg[2] + 300
             end, nil, timer.getTime() + 1
         )
